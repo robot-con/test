@@ -15,7 +15,7 @@ def handel(conn):
             conn.close()
 
         data = data.decode().split()[1]
-        if data == "/":
+        if data == "/register":
 
             send = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: keep-alive\r\n\r\n"
             conn.sendall(send.encode())
