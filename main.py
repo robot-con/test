@@ -1,32 +1,33 @@
 import socket
 import threading
+import time 
 
+server = socket.socket()
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(("0.0.0.0", 10000))
+server.bind(("0.0.0.0",10000))
 server.listen(5)
+
 
 def handel(conn):
     try:
-        data = conn.recv(1020)
+        data =  conn.recv(1024)
         if not data:
             conn.close()
-        send = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n"
-        send += "<h1>this is socket server</h1>"
-        conn.sendall(send.encode())
-        conn.close()
+
+        data = data.decode().split()[1]
+        if data == "/":
+
+            send = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: keep-alive\r\n\r\n"
+            conn.sendall(send.encode())
+            while True:
+                send = "hellow world\r\n"
+                conn.sendall(send.encode())
+                time.sleep(1)
     except Exception as e:
         conn.close()
-while True:
-    try:
-        conn , addr =server.accept()
-        print(addr)
-
-        thread = threading.Thread(target=handel, args=(conn,),daemon= True)
-        thread.start()
-
-    except Exception as e:
-        print (e)
     
 
-
+while True:
+    conn , addr = server.accept()
+    thread = threading.Thread(target= handel, args=(conn,), daemon= True)
+    thread.start()
