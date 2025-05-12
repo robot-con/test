@@ -15,7 +15,7 @@ def handel(conn):
             conn.close()
 
         data = data.decode().split()[1]
-        if data == "/register":
+        if data == "/":
 
             
             while True:
