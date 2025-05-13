@@ -17,7 +17,7 @@ def handel(conn):
         data = data.decode().split()[1]
         if data == "/":
 
-            send = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: keep-alive\r\n\r\n"
+            send = "HTTP/1.1 301 OK\r\nContent-Type: text/html\r\nConnection: keep-alive\r\n\r\n"
             conn.sendall(send.encode())
             while True:
                 send = "hellow world\r\n"
