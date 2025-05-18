@@ -3,20 +3,23 @@ import threading
 
 
 def fun_ser(conn,addr):
-    data = conn.recv(5000)
-    if not data:
-        conn.close()
-    print(data.decode())
-    conn.send("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: keep-alive\r\n\r\n  server ok".encode())
-
-    while True:
-        dt = conn.recv(5000)
-        if not dt:
+    try:
+        data = conn.recv(5000)
+        if not data:
             conn.close()
-            break
+        print(data.decode())
+        conn.send("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: keep-alive\r\n\r\n  server ok".encode())
 
-        print(dt.decode())
-        conn.send(f"data receive: {dt}".encode())        
+        while True:
+            dt = conn.recv(5000)
+            if not dt:
+                conn.close()
+                break
+
+            print(dt.decode())
+            conn.send(f"data receive: {dt}".encode())     
+    except Exception as e:
+        conn.close()   
 
 def main():
     server = socket.socket()
